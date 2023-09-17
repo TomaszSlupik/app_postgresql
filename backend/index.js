@@ -8,7 +8,7 @@ app.use(cors())
 app.use(express.json())
 
 
-// Załadowanie do bazy danyc
+// Załadowanie do bazy danych
 app.post('/todo', async (req, res) => {
     try {
         const { describe } = req.body;
@@ -38,7 +38,21 @@ app.delete('/todo/:id', async(req, res) => {
     }
 })
 
-
+// Edycja 
+app.put ('/todo/:id', async (req, res) => {
+    try {
+        const {id} = req.params
+        const {describe} = req.body;
+        const updateToDo = await pool.query(
+            "UPDATE todo SET describe = $1 where todo_id = $2",
+            [describe, id]
+        );
+        res.json({message: "Rekord został zaktualizowany"})
+    }
+    catch (err){
+        console.error(err)
+    }
+})
 
 // Wyswietelenie 
 app.get('/todo', async (req, res) => {
