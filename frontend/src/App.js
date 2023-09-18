@@ -11,6 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import AddToDo from './components/AddToDo/AddToDo';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -25,6 +26,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 function App() {
 
+// Stany dla tabeli todo
 const [number, setNumberId] = useState('')
 const [describe, setDescibe] = useState('')
 const [todos, setTodos] = useState([]); // Stan przechowujący dane z bazy
@@ -50,27 +52,7 @@ useEffect(() => {
 }, []);
 
 
-// Zapis do PostgreSql
-const saveDateToPostgreSql = async () => {
-  try {
-    const response = await fetch('http://localhost:5000/todo', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ describe }),
-    });
 
-    if (response.ok) {
-      console.log('Dane zostały zapisane do PostgreSQL.');
-      window.location.reload();
-    } else {
-      console.error('Wystąpił błąd podczas zapisywania danych do PostgreSQL.');
-    }
-  } catch (error) {
-    console.error('Wystąpił błąd podczas żądania do serwera.', error);
-  }
-}
 
 
 // Usuwanie z PostgreSql
@@ -147,26 +129,29 @@ const handleClickCloseAndDelete = () => {
 
   return (
     <div className="App">
-      <h2>Dodaj do bazy danych</h2>
-      <input 
-      value={number}
-      onChange={(e) => setNumberId(e.target.value)}
-      type="number" />
-      <input 
-      value={describe}
-      onChange={(e) => setDescibe(e.target.value)}
-      type="text" />
-      <Button 
-      variant='contained'
-      onClick={saveDateToPostgreSql}>Zapisz</Button>
+      <AddToDo 
+      number={number}
+      setNumberId={setNumberId}
+      describe={describe}
+      setDescibe={setDescibe}
+      />
+      
       <h2>Lista zadań:</h2>
-      <ul >
+      <div className='App__todo'>
+      <ul className='App__todo'>
         {todos.map((todo) => (
           <>
           <li 
-          style={{listStyle: 'none'}}
-          key={todo.todo_id}>{todo.describe}</li>
-          <Button
+          className='App__todo-task'
+          key={todo.todo_id}>
+            <div
+            className='App__todo-task--header'
+            >{todo.describe}
+            </div>
+            <div
+             className='App__todo-task--icon'
+            >
+                          <Button
         variant="outlined"
         onClick={() => handleClickOpen(todo.todo_id, todo.describe)}
         >
@@ -226,7 +211,9 @@ const handleClickCloseAndDelete = () => {
         aria-labelledby="customized-dialog-title"
         open={deleteOpen}
       >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title"
+        style={{marginTop: '1em'}}
+        >
           Usuwanie z bazy danych: 
           
         </DialogTitle>
@@ -259,9 +246,16 @@ const handleClickCloseAndDelete = () => {
       </BootstrapDialog>
 
 
+            </div>
+
+          </li>
+          
+
           </>
         ))}
       </ul>
+      </div>
+
           
     </div>
   );
