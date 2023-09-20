@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import AddToDo from './components/AddToDo/AddToDo';
+import DataReducer from './components/DataReducer/DataReducer';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -255,7 +256,7 @@ const handleClickCloseAndDelete = () => {
         ))}
       </ul>
       </div>
-
+        <DataReducer />
           
     </div>
   );
