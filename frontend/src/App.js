@@ -40,7 +40,7 @@ const fetchTodos = async () => {
     if (response.ok) {
       const data = await response.json();
       setTodos(data); 
-      console.error('Wystąpił błąd podczas pobierania danych z PostgreSQL.');
+      console.log('Jest ok');
     }
   } catch (error) {
     console.error('Wystąpił błąd podczas żądania do serwera.', error);

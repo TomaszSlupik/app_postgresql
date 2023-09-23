@@ -59,13 +59,23 @@ app.get('/todo', async (req, res) => {
     try {
         const allTodos = await pool.query("SELECT * FROM todo");
         res.json(allTodos.rows);
-        console.log(allTodos)
+        // console.log(allTodos)
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Wystąpił błąd podczas pobierania danych z bazy danych." });
     }
 });
 
+app.get('/reduce', async (req, res) => {
+    try {
+        const allTask = await pool.query("SELECT * FROM taskapp");
+        res.json(allTask.rows);
+        console.log(allTask)
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: "Wystąpił błąd podczas pobierania danych z bazy danych." });
+    }
+});
 
 // Port serwera
 app.listen(5000, () => {
